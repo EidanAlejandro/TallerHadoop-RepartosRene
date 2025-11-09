@@ -1,0 +1,28 @@
+<workflow-app xmlns="uri:oozie:workflow:0.4" name="repartos_rene_quejas_wf">
+    <start to="pig-analisis-quejas"/>
+
+    <action name="pig-analisis-quejas">
+        <pig>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <prepare>
+                <delete path="${nameNode}/user/cloudera/repartos_rene/processed/quejas_frecuentes"/>
+            </prepare>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <script>analisis_quejas.pig</script>
+        </pig>
+        <ok to="end"/>
+        <error to="kill"/>
+    </action>
+
+    <kill name="kill">
+        <message>La accion de Pig falló, mensaje de error[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+
+    <end name="end"/>
+</workflow-app>

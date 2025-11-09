@@ -1,0 +1,7 @@
+nameNode=hdfs://quickstart.cloudera:8020
+jobTracker=localhost:8032
+queueName=default
+oozie.use.system.libpath=true
+
+# Directorio en HDFS donde pondremos el workflow.xml y el script.pig
+oozie.wf.application.path=${nameNode}/user/cloudera/repartos_rene/oozie/quejas
